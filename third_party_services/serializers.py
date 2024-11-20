@@ -1,6 +1,6 @@
 import json
 from rest_framework import serializers
-from services.actions import validate_nin
+from third_party_services.actions import validate_nin
 
 
 class NinDetailsSerializer(serializers.Serializer):

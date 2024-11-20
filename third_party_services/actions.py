@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from services.serializers import NinDetailsSerializer
+from third_party_services.serializers import NinDetailsSerializer
 
 
 def validate_nin(self, request, **kwargs):
