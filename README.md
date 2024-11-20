@@ -1,4 +1,4 @@
-# third_party_services
+# Third Party Services
 A Python (Django) Package for third party services
 
 This package provides functionalities for commonly used services across different projects such as ```NIN, TIN and BRN validations``` so that the code is not rewritten in each of the individual projects. 
