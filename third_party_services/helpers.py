@@ -35,3 +35,24 @@ def make_get_request(url):
         return resp.data
     else:
         return {'error': f"Request failed, status code: {resp.status}"}
+    
+
+def mask_string(input_string, mask_length=5):
+    if input_string is not None:
+        if len(input_string) <= mask_length:
+            return input_string
+        else:
+            masked_part = '*' * (len(input_string) - mask_length)
+            visible_part = input_string[-mask_length:]
+            masked_string = masked_part + visible_part
+            return masked_string
+    else:
+        return input_string
+    
+
+def mask_email(email):
+    if '@' in email:
+        username, domain = email.split('@')
+        return f"{mask_string(username)}@{domain}"
+    else:
+        return mask_string(email)
