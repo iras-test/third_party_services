@@ -8,6 +8,24 @@ def validate_nin(nin):
     response = execute_with_timeout(make_get_request, url)
     return response
 
+def validate_tin(tin):
+    """Validate the TIN by calling the external service."""
+    url = f"{settings.URA_API}/service/clients/{tin}"
+    
+    return execute_with_timeout(make_get_request, url)
+
+def validate_brn(brn):
+    """Validate the BRN by calling the external service."""
+    url = f"{settings.SERVICE_URL}/ura/services/validate_brn/?brn={brn}"
+    response = execute_with_timeout(make_get_request, url)
+    return response
+
+def validate_vehicle(plate):
+    """Validate the vehicle by calling the external service."""
+    url = f"{settings.URA_API}/service/vehicle/{plate}"
+    response = execute_with_timeout(make_get_request, url)
+    return response
+
 
 def execute_with_timeout(func, *args, **kwargs):
     """Execute a function with a timeout."""
