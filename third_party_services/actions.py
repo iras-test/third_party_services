@@ -69,4 +69,6 @@ def get_vehicle_details_dict(number_plate):
         "seat_capacity": vehicle_details.get("seat_capacity", ""),
         "category_name": vehicle_details.get("category_name", ""),
         "purpose": vehicle_details.get("purpose", ""),
+        "gross_weight": vehicle_details.get("grossWeight", ""),
+        "net_weight": vehicle_details.get("netWeight", ""),
     }
