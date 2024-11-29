@@ -71,4 +71,5 @@ def get_vehicle_details_dict(number_plate):
         "purpose": vehicle_details.get("purpose", ""),
         "gross_weight": vehicle_details.get("grossWeight", ""),
         "net_weight": vehicle_details.get("netWeight", ""),
+        "tonnage": vehicle_details.get("tonnage", "")
     }
