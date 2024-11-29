@@ -47,3 +47,26 @@ def get_vehicle_details(number_plate):
     purpose =  vehicle_details.get('purpose', "")
     
     return owner_name, f"256{mobile_number}", email, tin, make_year , model, engine_number ,chasis_number ,color ,is_individual ,seat_capacity ,category_name, purpose
+
+
+def get_vehicle_details_dict(number_plate):
+    """Retrieve vehicle details and return them as a dictionary."""
+    vehicle_serializer = VehicleDetailsSerializer(data={'number_plate': number_plate})
+    vehicle_serializer.is_valid(raise_exception=True)
+    vehicle_details = vehicle_serializer.details(unmasked=True)
+
+    return {
+        "owner_name": vehicle_details.get("tax_payer_name", ""),
+        "mobile_number": f"256{vehicle_details.get('mobile_number', '')}",
+        "email": vehicle_details.get("email", None),
+        "tin": vehicle_details.get("tin", None),
+        "make_year": vehicle_details.get("make_year", ""),
+        "model": vehicle_details.get("model", ""),
+        "engine_number": vehicle_details.get("engine_number", ""),
+        "chasis_number": vehicle_details.get("chasis_number", ""),
+        "color": vehicle_details.get("color", ""),
+        "is_individual": vehicle_details.get("is_individual", ""),
+        "seat_capacity": vehicle_details.get("seat_capacity", ""),
+        "category_name": vehicle_details.get("category_name", ""),
+        "purpose": vehicle_details.get("purpose", ""),
+    }
