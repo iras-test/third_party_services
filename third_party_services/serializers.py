@@ -42,7 +42,7 @@ class NinDetailsSerializer(serializers.Serializer):
                         "personGivenNames": personGivenNames,
                         "personMaidenNames": personMaidenNames if unmasked else  mask_string(personMaidenNames),
                         "personOtherNames": personOtherNames if unmasked else  mask_string(personOtherNames),
-                        "personDateOfBirth": personDateOfBirth if unmasked else  mask_string(personDateOfBirth, 1),
+                        "personDateOfBirth": personDateOfBirth,
                         "personNationality": personNationality if unmasked else  mask_string(personNationality, 1),
                         "isValid": isValid
                     }
