@@ -144,10 +144,11 @@ class BrnDetailsSerializer(serializers.Serializer):
 
                     entityName =  resp_data['brnDetailsFromUrsb'].get('entityName', '')
                     isValid =  resp_data['brnDetailsFromUrsb'].get('isValid', '')
-                    
+                    incorporationDate = resp_data['brnDetailsFromUrsb'].get('incorporationDate', '')
 
                     return {
                         "entityName": entityName,
+                        "incorporationDate": incorporationDate,
                         "isValid" : isValid == True
                     }
                 
