@@ -140,20 +140,30 @@ class BrnDetailsSerializer(serializers.Serializer):
 
             elif resp.status == 200:
                 resp_data = json.loads(resp.data.decode('utf-8'))
-                if resp_data.get('errors') == None:
+                # if resp_data.get('errors') == None:
 
-                    entityName =  resp_data['brnDetailsFromUrsb'].get('entityName', '')
-                    isValid =  resp_data['brnDetailsFromUrsb'].get('isValid', '')
-                    incorporationDate = resp_data['brnDetailsFromUrsb'].get('incorporationDate', '')
+                #     entityName =  resp_data['brnDetailsFromUrsb'].get('entityName', '')
+                #     isValid =  resp_data['brnDetailsFromUrsb'].get('isValid', '')
+                #     incorporationDate = resp_data['brnDetailsFromUrsb'].get('incorporationDate', '')
 
-                    return {
-                        "entityName": entityName,
-                        "incorporationDate": incorporationDate,
-                        "isValid" : isValid == True
-                    }
+                #     return {
+                #         "entityName": entityName,
+                #         "incorporationDate": incorporationDate,
+                #         "isValid" : isValid == True
+                #     }
                 
-                else:
-                    raise serializers.ValidationError({'detail': resp_data.get('errorDesc')})
+                # else:
+                #     raise serializers.ValidationError({'detail': resp_data.get('errorDesc')})
+    
+                entityName =  resp_data['brnDetailsInEtax'].get('taxPayerName', '')
+                isValid =  resp_data['brnDetailsInEtax'].get('isBrnInEtax', '')
+                incorporationDate = resp_data['brnDetailsFromUrsb'].get('incorporationDate', '')
+
+                return {
+                    "entityName": entityName,
+                    "incorporationDate": incorporationDate,
+                    "isValid" : isValid == True
+                }
 
             return resp
 
