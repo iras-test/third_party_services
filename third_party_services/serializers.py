@@ -169,7 +169,11 @@ class BrnDetailsSerializer(serializers.Serializer):
 
         except:
             return []
-        
+
+
+class ObrsBrnSerializer(serializers.Serializer):
+    brn = serializers.CharField(max_length=14, required=True, allow_blank=False)
+
 
 class VehicleDetailsSerializer(serializers.Serializer):
     number_plate = serializers.CharField(max_length=25, required=True)
