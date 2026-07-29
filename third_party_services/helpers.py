@@ -26,7 +26,7 @@ def validate_obrs_brn(brn):
     timeout = getattr(settings, "EXTERNAL_SERVICE_TIMEOUT", 30) or 30
     url = (
         f"{settings.SERVICE_URL}/ura/services/"
-        f"validate_obrs_brn/?brn={brn}"
+        f"validate-obrs-brn/?brn={brn}"
     )
     http = urllib3.PoolManager()
     return http.request(
