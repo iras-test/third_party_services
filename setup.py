@@ -19,7 +19,6 @@ setup(
     install_requires=[
         'Django',
         'djangorestframework',
-        'requests',
         'urllib3'
 
     ],

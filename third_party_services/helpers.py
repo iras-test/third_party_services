@@ -20,6 +20,20 @@ def validate_brn(brn):
     response = execute_with_timeout(make_get_request, url)
     return response
 
+
+def validate_obrs_brn(brn):
+    """Validate the BRN using the OBRS service."""
+    timeout = getattr(settings, "EXTERNAL_SERVICE_TIMEOUT", 30) or 30
+    url = f"{settings.SERVICE_URL.rstrip('/')}/ura/services/validate-obrs-brn/"
+    http = urllib3.PoolManager()
+    return http.request(
+        "GET",
+        url,
+        fields={"brn": brn},
+        timeout=timeout,
+    )
+
+
 def validate_vehicle(plate):
     """Validate the vehicle by calling the external service."""
     url = f"{settings.URA_API}/service/vehicle/{plate}"
