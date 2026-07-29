@@ -1,6 +1,17 @@
 import json
+import urllib3
+from django.conf import settings
 from rest_framework import serializers
-from third_party_services.helpers import mask_email, mask_string, validate_brn, validate_nin, validate_tin, validate_vehicle
+from rest_framework import status
+from third_party_services.helpers import (
+    mask_email,
+    mask_string,
+    validate_brn,
+    validate_nin,
+    validate_obrs_brn,
+    validate_tin,
+    validate_vehicle,
+)
 
 
 class NinDetailsSerializer(serializers.Serializer):
@@ -171,8 +182,82 @@ class BrnDetailsSerializer(serializers.Serializer):
             return []
 
 
-class ObrsBrnSerializer(serializers.Serializer):
+class ObrsBrnDetailsSerializer(serializers.Serializer):
     brn = serializers.CharField(max_length=14, required=True, allow_blank=False)
+
+    def details(self):
+        self.is_valid(raise_exception=True)
+        brn = self.validated_data.get("brn")
+
+        try:
+            response = validate_obrs_brn(brn)
+        except urllib3.exceptions.TimeoutError:
+            return (
+                {
+                    "error": "OBRS_TIMEOUT",
+                    "message": "The OBRS validation service timed out.",
+                    "data": None,
+                    "status": status.HTTP_504_GATEWAY_TIMEOUT,
+                },
+                status.HTTP_504_GATEWAY_TIMEOUT,
+            )
+        except urllib3.exceptions.HTTPError:
+            return (
+                {
+                    "error": "OBRS_UNAVAILABLE",
+                    "message": "The OBRS validation service is unavailable.",
+                    "data": None,
+                    "status": status.HTTP_502_BAD_GATEWAY,
+                },
+                status.HTTP_502_BAD_GATEWAY,
+            )
+
+        try:
+            payload = json.loads(response.data.decode("utf-8"))
+        except (AttributeError, UnicodeDecodeError, ValueError):
+            error_data = {
+                "upstreamStatus": response.status,
+                "contentType": response.headers.get("Content-Type", ""),
+            }
+            if getattr(settings, "DEBUG", False):
+                raw_response = getattr(response, "data", b"")
+                if isinstance(raw_response, bytes):
+                    raw_response = raw_response.decode("utf-8", errors="replace")
+                error_data["rawResponse"] = raw_response
+
+            return (
+                {
+                    "error": "OBRS_INVALID_RESPONSE",
+                    "message": "The OBRS validation service returned invalid JSON.",
+                    "data": error_data,
+                    "status": status.HTTP_502_BAD_GATEWAY,
+                },
+                status.HTTP_502_BAD_GATEWAY,
+            )
+
+        if not 200 <= response.status < 300:
+            return payload, response.status
+
+        company = payload.get("data") if isinstance(payload, dict) else None
+        if not isinstance(company, dict):
+            return (
+                {
+                    "error": "OBRS_INVALID_RESPONSE",
+                    "message": "The OBRS validation service returned no company data.",
+                    "data": None,
+                    "status": status.HTTP_502_BAD_GATEWAY,
+                },
+                status.HTTP_502_BAD_GATEWAY,
+            )
+
+        return (
+            {
+                "entityName": company.get("entityName") or "",
+                "incorporationDate": company.get("incorporationDate") or "",
+                "isValid": True,
+            },
+            status.HTTP_200_OK,
+        )
 
 
 class VehicleDetailsSerializer(serializers.Serializer):
