@@ -32,7 +32,7 @@ class ObrsBrnDetailsSerializerTests(SimpleTestCase):
                     200,
                     {
                         "data": {
-                            "entityName": "COMPANY NAME MUST NOT BE RETURNED",
+                            "entityName": "EXAMPLE COMPANY LIMITED",
                             "registrationStatus": registration_status,
                         },
                         "status": 200,
@@ -45,8 +45,10 @@ class ObrsBrnDetailsSerializerTests(SimpleTestCase):
 
                 self.assertEqual(response_status, 400)
                 self.assertEqual(payload["error"], "OBRS_SERVICE_NOT_ALLOWED")
+                self.assertTrue(payload["detail"].startswith("EXAMPLE COMPANY LIMITED"))
                 self.assertIn(expected_message_part, payload["detail"])
                 self.assertNotIn("entityName", payload)
+                self.assertEqual(payload["data"]["legal_name"], "")
 
     @patch("third_party_services.serializers.validate_obrs_brn")
     def test_returns_company_for_registered_status(self, validate):
