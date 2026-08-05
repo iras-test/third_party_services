@@ -12,6 +12,7 @@ from third_party_services.helpers import (
     validate_tin,
     validate_vehicle,
 )
+from third_party_services.obrs import service_eligibility_error
 
 
 class NinDetailsSerializer(serializers.Serializer):
@@ -249,6 +250,10 @@ class ObrsBrnDetailsSerializer(serializers.Serializer):
                 },
                 status.HTTP_502_BAD_GATEWAY,
             )
+
+        eligibility_error = service_eligibility_error(company)
+        if eligibility_error:
+            return eligibility_error
 
         return (
             {

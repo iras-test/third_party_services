@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='third_party_services',
-    version='0.1.9',
+    version='0.1.10',
     author='Sunday Deogratias',
     author_email='sundaydeogratias8@gmail.com',
     description='A wrapper package for YTL external services',
