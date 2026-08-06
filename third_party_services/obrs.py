@@ -1,7 +1,7 @@
 OBRS_SERVICE_DENIED_MESSAGE_TEMPLATES = {
     "dormant": "{company} is currently dormant.",
     "struck off": "{company} has been struck off.",
-    "dissolved ceased": "{company} has been dissolved or ceased operations.",
+    "ceased": "{company} has ceased operations.",
     "de registered": "{company} is deregistered.",
     "in provisional liquidation": "{company} is under provisional liquidation.",
     "in liquidation": "{company} is undergoing liquidation.",
