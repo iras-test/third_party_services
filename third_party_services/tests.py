@@ -19,8 +19,8 @@ class ObrsBrnDetailsSerializerTests(SimpleTestCase):
     def test_denies_company_statuses_marked_do_not_offer_service(self, validate):
         denied_statuses = {
             "Dormant": "currently dormant",
-            "Struck-off": "apply for restoration at URSB",
-            "Dissolved/Ceased": "dissolved or ceased operations",
+            "Struck-off": "has been struck off",
+            "Ceased": "has ceased operations",
             "De_Registered": "deregistered",
             "In_Provisional_liquidation": "under provisional liquidation",
             "In_Liquidation": "undergoing liquidation",
